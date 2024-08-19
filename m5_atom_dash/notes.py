@@ -1,3 +1,5 @@
+# Pre-defined notes per frequency (note in portuguese on comment)
+
 note_freq = {
     'C2': 65,    # Dó   2
     'C#2': 69,   # Dó#  2

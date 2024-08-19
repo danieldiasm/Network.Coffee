@@ -1,3 +1,4 @@
+# Pre-Defined Tunes
 
 class Tunes:
     schindler_lift_tune = [('A4',1),('F#4',1),('D4',1)]

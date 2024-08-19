@@ -1,3 +1,5 @@
+# Buzzer sounds player
+
 from machine import PWM
 import time
 from notes import note_freq
