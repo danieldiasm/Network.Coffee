@@ -18,11 +18,14 @@ class Player:
         pwm.deinit()
     
     def eval_and_play(data):
-        eval_tune = eval(data)
-        if isinstance(eval_tune, list) and isinstance(eval_tune[0], tuple):
-            Player.play_tune(eval_tune)
-        else:
-            raise PlayerError("Invalid Tune provided")
+        try:
+            eval_tune = eval(data)
+            if isinstance(eval_tune, list) and isinstance(eval_tune[0], tuple):
+                Player.play_tune(eval_tune)
+            else:
+                raise PlayerError("Invalid Tune provided")
+        except Exception as e:
+            return f"Failed to eval and play: {e}"
 
     def play_tune(tune, duty = 16384):
         for note in tune:
