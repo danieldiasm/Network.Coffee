@@ -3,12 +3,11 @@ from machine import UART
 
 class SerialComm:
 
-    def __init__(self, tx=22, rx=19, baud_rate=9600, timeout=1000) -> None:
+    def __init__(self, tx=22, rx=19, baud_rate=9600) -> None:
         self.tx = tx
         self.rx = rx
         self.baud_rate = baud_rate
         self.uart_id = 1
-        self.timeout = timeout
         self.uart = UART(self.uart_id, 
                          self.baud_rate,
                          tx=self.tx,
@@ -18,11 +17,16 @@ class SerialComm:
         self.uart.init()
 
     def rcv_data(self):
-        if self.uart.any():
-            data = self.uart.read()
-            if data:
-                return data.decode('utf-8')
-        return None
+        buffer = ''
+        while True:
+            print(self.uart.any())
+            byte = self.uart.read(1)
+            if byte is not None:
+                print(byte.decode('utf-8'))
+                buffer += byte.decode()
+            if byte == b"\n":
+                break
+        return buffer
     
     def send_data(self, data):
         self.uart.write(data)
