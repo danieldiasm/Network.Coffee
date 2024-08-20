@@ -1,6 +1,7 @@
 # Pre-defined notes per frequency (note in portuguese on comment)
 
 note_freq = {
+    'P':90000,   # Pausa/Pause 0Hz causes it to crash
     'C2': 65,    # Dó   2
     'C#2': 69,   # Dó#  2
     'D2': 73,    # Ré   2
