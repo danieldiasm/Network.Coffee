@@ -49,3 +49,7 @@ class SerialComm:
         Send data over the already opened serial connection.
         '''
         self.uart.write(data)
+
+    def incomming_data(self):
+        ''' Returns the same as uart.any(), just a wrapper for simplification'''
+        return self.uart.any()
