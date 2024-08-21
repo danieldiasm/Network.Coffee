@@ -1,4 +1,5 @@
 import serial
+import threading
 import time
 from frames import coffee_mug as mug
 
@@ -12,30 +13,56 @@ ser = serial.Serial(
     timeout=1          # Set a timeout for reading (optional)
 )
 
-def send_data(data):
-    if ser.is_open:
-        ser.write(data.encode())  # Send the data as bytes
-        print(f"Sent: {data}")
-    else:
-        print("Serial port is not open")
+running = True
+
+def send_data():
+    global running
+    while running:
+        for i in mug:
+            if ser.is_open:
+                data = f"D{i}"+"\n"
+                ser.write(data.encode("utf-8"))  # Send the data as bytes
+                print(f"Sent data")
+                time.sleep(0.5)
+            else:
+                print("Serial port is not open")
+                running = False
+
+def receive_data():
+    global running
+    while running:
+        if ser.in_waiting > 0:
+            # Read
+            incoming_data = ser.readline().decode().strip()
+            if incoming_data:
+                print(f"Received: {incoming_data}")
 
 def close_serial():
     if ser.is_open:
         ser.close()
         print("Serial port closed")
 
-# Main loop (or just one-time send)
+# Setup and Start sending and receiving threads
+send_thread = threading.Thread(target=send_data)
+receive_thread = threading.Thread(target=receive_data)
+
+send_thread.start()
+receive_thread.start()
+
+def graceful_stop():
+    global running
+    running = False
+    # give time of the threads to end
+    time.sleep(1)
+
 try:
     while True:
-        # data = input("Enter data to send (type 'exit' to quit): ")
-        # if data.lower() == 'exit':
-        #    break
-        # send_data(data+"\n")
-        for i in mug:
-            send_data(f"D{i}"+"\n")
-            time.sleep(1)  # Short delay before the next send (optional)
+        time.sleep(0.1)
 except KeyboardInterrupt:
-    print("\nGraceful stop: KeyboardInterrupt received")
+    print("\nKeyboardInterrupt received!")
+    graceful_stop()
 finally:
+    send_thread.join()
+    receive_thread.join()
     close_serial()
     print("Program exited cleanly.")
