@@ -4,7 +4,7 @@ from machine import UART
 
 class SerialComm:
 
-    def __init__(self, tx=22, rx=19, baud_rate=9600) -> None:
+    def __init__(self, tx=22, rx=19, baud_rate=57600) -> None:
         self.tx = tx
         self.rx = rx
         self.baud_rate = baud_rate
