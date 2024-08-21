@@ -35,13 +35,16 @@ class SerialComm:
         Receives data from the defined port until it gets a line break.
         '''
         buffer = ''
-        while True:
-            byte = self.uart.read(1)
-            if byte is not None:
-                buffer += byte.decode()
-            if byte == b"\n":
-                break
-        return buffer
+        try:
+            while True:
+                byte = self.uart.read(1)
+                if byte is not None:
+                    buffer += byte.decode()
+                if byte == b"\n":
+                    break
+            return buffer
+        except UnicodeError as e:
+            return f"Unicode Error: Invalid Character"
     
 
     def send_data(self, data):
