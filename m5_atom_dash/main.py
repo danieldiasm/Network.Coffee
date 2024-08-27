@@ -32,6 +32,8 @@ try:
     while True:
         if ser_uart1.incomming_data():
             data = ser_uart1.rcv_data()
-            com_processor.route(data)
+            res = com_processor.route(data)
+            if res is not None:
+                ser_uart1.send_data(res)
 except KeyboardInterrupt:
     pass
