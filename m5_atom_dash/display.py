@@ -30,6 +30,8 @@ class Display:
 
 
     def display_frame(self, display_map:list):
+        if len(display_map < 24):
+            display_map = display_map + [(0,0,0) for x in range(25 - len(display_map))]
         for i in range(self.size):
             self.set_pixel(i, display_map[i])
         self.display()
@@ -40,11 +42,11 @@ class Display:
             frame_map = eval(data)
 
             if isinstance(frame_map, list) \
-            and isinstance(frame_map[0], tuple) \
-            and len(frame_map) == self.size:
+            and isinstance(frame_map[0], tuple):
                 self.display_frame(frame_map)
             elif isinstance(frame_map, list) and "clear" == frame_map[0]:
                 self.clear_display()
+                return "cleared"
             else:
                 raise DisplayError("Invalid Display Map")
         except Exception as e:
