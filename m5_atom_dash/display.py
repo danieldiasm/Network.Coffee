@@ -30,7 +30,7 @@ class Display:
 
 
     def display_frame(self, display_map:list):
-        if len(display_map < 24):
+        if len(display_map) < 24:
             display_map = display_map + [(0,0,0) for x in range(25 - len(display_map))]
         for i in range(self.size):
             self.set_pixel(i, display_map[i])
