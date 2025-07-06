@@ -21,3 +21,6 @@
 go.work
 go.work.sum
 experimentation_code/__pycache__/*
+
+# Python files
+__pycache__
