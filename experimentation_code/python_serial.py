@@ -2,16 +2,19 @@ import serial
 import threading
 import time
 from frames import coffee_mug as mug
+import tunes
 
 # Configure the serial connection (COM port, baud rate, etc.)
 ser = serial.Serial(
-    port='COM5',       # Replace with your port
+    port='COM3',       # Replace with your port
     baudrate=57600,     # Set the baud rate to match the device
     parity=serial.PARITY_NONE,
     stopbits=serial.STOPBITS_ONE,
     bytesize=serial.EIGHTBITS,
     timeout=1          # Set a timeout for reading (optional)
 )
+
+tune = tunes.Tunes
 
 running = True
 
@@ -36,6 +39,11 @@ def receive_data():
             incoming_data = ser.readline().decode().strip()
             if incoming_data:
                 print(f"Received: {incoming_data}")
+            if incoming_data == '01BP':
+                print("Sending Tune")
+                data = f"T{tune.pitfall_death_tune}"+"\n"
+                ser.write(data.encode("utf-8"))
+                time.sleep(0.5)
 
 def close_serial():
     if ser.is_open:
