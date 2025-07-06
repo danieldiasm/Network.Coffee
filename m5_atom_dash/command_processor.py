@@ -27,7 +27,7 @@ class CommandProcessor:
         data = message[self.command_length:]
         # Possible improvement, receive multiple arguments
         try:
-            self.command_methods[command](data)
-            return None
+            res = self.command_methods[command](data)
+            return res
         except Exception as e:
             return (f"Error processing request: {e}")
